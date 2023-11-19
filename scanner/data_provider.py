@@ -1,5 +1,6 @@
 from scanner.block import Block
 from scanner.transaction import Transaction
+from web3.datastructures import AttributeDict
 
 
 class DataProvider:
@@ -12,14 +13,14 @@ class DataProvider:
         return self.__block
 
     @block.setter
-    def block(self, block: Block) -> None:
+    def block(self, block: AttributeDict) -> None:
         self.__transactions = {}
-        self.__block = block
+        self.__block = Block(block)
 
     @property
     def transactions(self) -> {Transaction}:
         return self.__transactions
 
     @transactions.setter
-    def transactions(self, transaction: Transaction) -> None:
-        self.__transactions[transaction.hash] = transaction
+    def transactions(self, transaction: AttributeDict) -> None:
+        self.__transactions[transaction['hash']] = Transaction(transaction)

@@ -1,9 +1,10 @@
 from web3.types import HexBytes
+from web3.datastructures import AttributeDict
 
 
 class Transaction:
 
-    def __init__(self, transaction):
+    def __init__(self, transaction: AttributeDict):
         self.__transaction = transaction
 
     @property
@@ -81,3 +82,9 @@ class Transaction:
     @property
     def y_parity(self) -> int:
         return self.__transaction['y_parity']
+
+    def to_dict(self) -> dict:
+        return dict(self.__transaction)
+
+    def raw(self) -> AttributeDict:
+        return self.__transaction

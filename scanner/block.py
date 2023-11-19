@@ -1,9 +1,10 @@
 from web3.types import HexBytes
+from web3.datastructures import AttributeDict
 
 
 class Block:
 
-    def __init__(self, block):
+    def __init__(self, block: AttributeDict):
         self.__block = block
 
     @property
@@ -93,3 +94,9 @@ class Block:
     @property
     def withdrawals_root(self) -> HexBytes:
         return self.__block['withdrawalsRoot']
+
+    def to_dict(self) -> dict:
+        return dict(self.__block)
+
+    def raw(self) -> AttributeDict:
+        return self.__block

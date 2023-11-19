@@ -1,14 +1,10 @@
 from web3 import Web3
-from scanner.block import Block
-from scanner.transaction import Transaction
 from scanner.data_provider import DataProvider
 
 
 class Scanner:
 
-    __block: Block = None
     __provider: Web3
-    __transactions: {Transaction} = {}
     __data_provider: DataProvider = DataProvider()
 
     def __init__(
@@ -24,10 +20,8 @@ class Scanner:
             self,
             block_number: int = None
     ):
-        self.__data_provider.block = Block(
-            self.__provider.eth.get_block(
-                'latest' if block_number is None else block_number
-            )
+        self.__data_provider.block = self.__provider.eth.get_block(
+            'latest' if block_number is None else block_number
         )
 
     def load_transaction(
@@ -39,7 +33,7 @@ class Scanner:
             transaction_entity = self.__provider.eth.get_transaction(
                 self.__data_provider.block.transactions[transaction_index]
             )
-            self.__data_provider.transactions = Transaction(transaction_entity)
+            self.__data_provider.transactions = transaction_entity
 
     @property
     def data_provider(self) -> DataProvider:
