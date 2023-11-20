@@ -1,5 +1,7 @@
 from web3 import Web3
 from scanner.data_provider import DataProvider
+import json
+from pprint import pprint
 
 
 class Scanner:
@@ -33,7 +35,19 @@ class Scanner:
             transaction_entity = self.__provider.eth.get_transaction(
                 self.__data_provider.block.transactions[transaction_index]
             )
+            receipt = self.__provider.eth.get_transaction_receipt(self.__data_provider.block.transactions[transaction_index])
+
+            print(self.__data_provider.block.transactions[transaction_index], receipt['contractAddress'])
             self.__data_provider.transactions = transaction_entity
+
+    def load_contract(
+            self, hash
+    ) -> None:
+
+        with open('erc20_abi.json') as abi_file:
+            abi = json.load(abi_file)
+        contract_entity = self.__provider.eth.contract(hash, abi=abi)
+        pprint(contract_entity.functions.__dict__)
 
     @property
     def data_provider(self) -> DataProvider:
